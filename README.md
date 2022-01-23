@@ -1,0 +1,2 @@
+# solve-wordle
+Solve Wordle
