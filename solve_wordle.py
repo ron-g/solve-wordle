@@ -16,6 +16,9 @@ p5_precedence='seydtrnalhkoipmgcfxwzubvj'
 
 separator = '-='
 
+def custom_sort():
+    return ( p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence )
+
 try:
     with open(dict_file, 'r') as f:
         five_letter_words = f.read()
@@ -34,35 +37,35 @@ parser = argparse.ArgumentParser(description="Suggest words for wordle. pX can b
 parser.add_argument(
 	"--p1",
 	type=str,
-	default = p1_precedence,
+	default = charsLower, # p1_precedence,
 	help="Position 1 character set."
 	)
 
 parser.add_argument(
 	"--p2",
 	type=str,
-	default = p2_precedence,
+	default = charsLower, #p2_precedence,
 	help="Position 2 character set."
 	)
 
 parser.add_argument(
 	"--p3",
 	type=str,
-	default = p3_precedence,
+	default = charsLower, #p3_precedence,
 	help="Position 3 character set."
 	)
 
 parser.add_argument(
 	"--p4",
 	type=str,
-	default = p4_precedence,
+	default = charsLower, #p4_precedence,
 	help="Position 4 character set."
 	)
 
 parser.add_argument(
 	"--p5",
 	type=str,
-	default = p5_precedence,
+	default = charsLower, #p5_precedence,
 	help="Position 5 character set."
 	)
 
@@ -74,7 +77,13 @@ the_regex = re.compile(the_regex)
 
 print(f"\n{separator * 10} GUESSES {separator[::-1] * 10}")
 
-for match in sorted(list(filter(the_regex.match, five_letter_words)), key = lambda e: (p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence)):
+sorted_word_list = \
+        sorted(\
+            list(filter(the_regex.match, five_letter_words)), \
+            key = lambda e: (e[0],e[1],e[2],e[3],e[4]) #(p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence)
+        )
+
+for match in sorted_word_list:
     print(match)
 
 print(f"{separator * 12} {separator[::-1] * 12}")
