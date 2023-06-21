@@ -82,15 +82,6 @@ the_match_regex = rf"[{args.p1}][{args.p2}][{args.p3}][{args.p4}][{args.p5}]"
 the_match_regex = re.compile(the_match_regex)
 # print(the_match_regex)
 
-if len(args.contains) > 0:
-	the_contains_regex = []
-	for _ in perms(args.contains):
-		the_contains_regex.append(f".*{'.*'.join(_)}.*")
-
-	the_contains_regex = rf"{'|'.join(the_contains_regex)}"
-	the_contains_regex = re.compile(the_contains_regex)
-	# print(the_contains_regex)
-
 print(f"\n{separator * 10} GUESSES {separator[::-1] * 10}")
 
 sorted_word_list = \
@@ -99,8 +90,23 @@ sorted_word_list = \
             key = lambda e: (e[0],e[1],e[2],e[3],e[4]) #(p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence)
         )
 
+if len(args.contains) > 0:
+	the_contains_regex = []
+	for _ in perms(args.contains):
+		the_contains_regex.append(f".*{'.*'.join(_)}.*")
+
+	the_contains_regex = rf"{'|'.join(the_contains_regex)}"
+	the_contains_regex = re.compile(the_contains_regex)
+	# print(the_contains_regex)
+	word_list_with_contains = \
+        sorted(\
+            list(filter(the_contains_regex.match, sorted_word_list)), \
+            key = lambda e: (e[0],e[1],e[2],e[3],e[4]) #(p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence)
+        )
+	sorted_word_list = word_list_with_contains
+
 for eachMatch in sorted_word_list:
-	#print(eachMatch)
+	print(eachMatch)
 	pass
 
 print(f"{separator * 12} {separator[::-1] * 12}")
