@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import argparse, re
+from itertools import permutations as perms
 
 charsLower = 'qwertyuipasdfghjkzxcvbnm'
-charsUpper = 'QWERTYUOPASDFGHJKLZXCVBNM'
 dict_file = './5letterwords'
 
 # This positional character analysis was performed against the dictionary included with Ubuntu.
@@ -69,23 +69,41 @@ parser.add_argument(
 	help="Position 5 character set."
 	)
 
+parser.add_argument(
+	"--contains",
+	type=str,
+	default = '',
+	help="Optional char(s) that must appear in guess."
+	)
+
 args = parser.parse_args()
 
-the_regex = rf"[{args.p1}][{args.p2}][{args.p3}][{args.p4}][{args.p5}]"
-the_regex = re.compile(the_regex)
-# print(the_regex)
+the_match_regex = rf"[{args.p1}][{args.p2}][{args.p3}][{args.p4}][{args.p5}]"
+the_match_regex = re.compile(the_match_regex)
+# print(the_match_regex)
+
+if len(args.contains) > 0:
+	the_contains_regex = []
+	for _ in perms(args.contains):
+		the_contains_regex.append(f".*{'.*'.join(_)}.*")
+
+	the_contains_regex = rf"{'|'.join(the_contains_regex)}"
+	the_contains_regex = re.compile(the_contains_regex)
+	# print(the_contains_regex)
 
 print(f"\n{separator * 10} GUESSES {separator[::-1] * 10}")
 
 sorted_word_list = \
         sorted(\
-            list(filter(the_regex.match, five_letter_words)), \
+            list(filter(the_match_regex.match, five_letter_words)), \
             key = lambda e: (e[0],e[1],e[2],e[3],e[4]) #(p1_precedence, p2_precedence, p3_precedence, p4_precedence, p5_precedence)
         )
 
-for match in sorted_word_list:
-    print(match)
+for eachMatch in sorted_word_list:
+	#print(eachMatch)
+	pass
 
 print(f"{separator * 12} {separator[::-1] * 12}")
 
 exit(0)
+
