@@ -73,7 +73,7 @@ parser.add_argument(
 	"--contains",
 	type=str,
 	default = '',
-	help="Optional char(s) that must appear in guess."
+	help="Optional. Char(s) that must appear in guess."
 	)
 
 args = parser.parse_args()
