@@ -32,7 +32,10 @@ else:
 finally:
     pass
 
-parser = argparse.ArgumentParser(description="Suggest words for wordle. pX can be a single char, char class/range, or negated char class/range.")
+parser = argparse.ArgumentParser(
+		description="Suggest words for wordle. pX can be a single char, char class/range, or negated char class/range.",
+		epilog = ""
+		)
 
 parser.add_argument(
 	"--p1",
