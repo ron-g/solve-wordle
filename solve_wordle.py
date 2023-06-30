@@ -73,6 +73,7 @@ parser.add_argument(
 	)
 
 parser.add_argument(
+	"-c",
 	"--contains",
 	type=str,
 	default = '',
